@@ -765,7 +765,9 @@ class Dn implements ArrayAccess
         }
         for ($i = 0, $count = count($pdn); $i < $count; $i++) {
             //  do not force strict comparison via CS: unsafe here.
-            if ($cdn[$i + $startIndex] != $pdn[$i]) { // phpcs:ignore
+            // https://github.com/laminas/laminas-ldap/issues/4
+            $result = array_udiff_uassoc($cdn[$i + $startIndex], $cdn[$i + $startIndex], 'strcasecmp', 'strcasecmp');
+            if (!empty($result) ) {
                 return false;
             }
         }
